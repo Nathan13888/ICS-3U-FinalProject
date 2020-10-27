@@ -1,0 +1,17 @@
+html,
+body,
+.Site {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  scroll-behavior: smooth;
+}
+
+.header,
+.footer {
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex: 1 0 auto;
+}
