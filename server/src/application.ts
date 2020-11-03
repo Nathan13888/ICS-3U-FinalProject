@@ -4,11 +4,16 @@ import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
-import {RepositoryMixin} from '@loopback/repository';
+import {RepositoryMixin, SchemaMigrationOptions} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
-import path from 'path';
 import {MySequence} from './sequence';
+import { UserRepository } from './repositories';
+import fs from 'fs';
+import _ from 'lodash';
+import path from 'path';
+import YAML from 'yaml';
+import { User } from './models';
 
 export {ApplicationConfig};
 
@@ -40,5 +45,25 @@ export class LbhubApiApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  async migrateSchema(options?: SchemaMigrationOptions) {
+    console.info('Database is seeding now...')
+    await super.migrateSchema(options);
+    
+    const userRepo = await this.getRepository(UserRepository);
+    await userRepo.deleteAll();
+    const usersDir = path.join(__dirname, '../fixtures/users');
+    const userFiles = fs.readdirSync(usersDir);
+
+    for (const file of userFiles) {
+      if (file.endsWith('.yml')) {
+        const userFile = path.join(usersDir, file);
+        const yamlString = YAML.parse(fs.readFileSync(userFile, 'utf8'));
+        const input = new User(_.omit(yamlString, ['password']));
+        const user = await userRepo.create(input);
+      }
+    }
+    console.info('Database seeding is finished!');
   }
 }
