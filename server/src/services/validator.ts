@@ -7,8 +7,6 @@ export function validateEmail(email: string) {
   }
 }
 
-export function validateUsername(username: string) {
-  if (username.length < 3) throw new HttpErrors.UnprocessableEntity('Username must be minimum 3 characters');
-  if (username.length > 20) throw new HttpErrors.UnprocessableEntity('Username must be maximum 20 characters');
-  if (!/^[a-zA-z0-9]+$/.test(username)) throw new HttpErrors.UnprocessableEntity('Username must be alphanumeric');
+export function validateName(name: string) {
+  if (!/^\S.*[^\s]$/.test(name)) throw new HttpErrors.UnprocessableEntity('Names must not start nor end with whitespace');
 }

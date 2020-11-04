@@ -3,6 +3,7 @@ import {User, UserRelations} from '../models';
 import {UsersDataSource} from '../datasources';
 import {inject} from '@loopback/core';
 import { HttpErrors } from '@loopback/rest';
+import { validateEmail, validateName } from '../services/validator';
 
 export class UserRepository extends DefaultCrudRepository<
   User,
@@ -15,13 +16,13 @@ export class UserRepository extends DefaultCrudRepository<
     super(User, dataSource);
   }
 
-  async createUser(email: string, username: string): Promise<User> {
-    const newUser = new User;
-    newUser.email = email;
-    newUser.username = username;
+  async createUser(user: User): Promise<User> {
+    validateEmail(user.email);
+    if(user.firstName) validateName(user.firstName);
+    if(user.lastName) validateName(user.lastName);
 
     try {
-      const savedUser = await this.create(newUser);
+      const savedUser = await this.create(user);
 
       return savedUser;
     } catch (error) {

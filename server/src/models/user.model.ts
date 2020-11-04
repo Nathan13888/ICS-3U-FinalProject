@@ -1,5 +1,11 @@
 import {Entity, model, property} from '@loopback/repository';
 
+enum Role {
+  STUDENT='student',
+  MENTOR='mentor',
+  TEACHER='teacher',
+}
+
 @model({
     settings: {
     indexes: {
@@ -33,9 +39,11 @@ export class User extends Entity {
   @property({
     type: 'string',
     required: true,
-    index: {unique: true},
+    jsonSchema: {
+      enum: Object.values(Role),
+    }
   })
-  username: string;
+  role: Role;
 
   @property({
     type: 'string',
@@ -49,6 +57,10 @@ export class User extends Entity {
 
   @property({
     type: 'number',
+    jsonSchema: {
+      minimum: 1,
+      maximum: 12,
+    }
   })
   grade?: number;
 

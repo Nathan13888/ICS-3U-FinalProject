@@ -1,9 +1,9 @@
 import {inject} from '@loopback/core';
-import { repository } from '@loopback/repository';
-import { post, requestBody, param, getModelSchemaRef, get } from '@loopback/rest';
+import { Filter, repository } from '@loopback/repository';
+import { post, requestBody, param, getModelSchemaRef, get, getFilterSchemaFor, put, del } from '@loopback/rest';
 import { User } from '../models';
 import { UserRepository } from '../repositories';
-import { validateEmail, validateUsername } from '../services/validator';
+import { validateEmail } from '../services/validator';
 
 export class UserController {
   constructor(
@@ -33,12 +33,50 @@ export class UserController {
     })
     user: User,
   ): Promise<User> {
-    validateEmail(user.email);
-    validateUsername(user.username);
-    return this.userRepository.createUser(
-      user.email,
-      user.username,
-    );
+    return this.userRepository.createUser(user);
+  }
+
+  @put('/users/{userId}', {
+    responses: {
+      '200': {
+        description: 'User',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
+        },
+      },
+    },
+  })
+  async set(
+    @param.path.string('userId') userId: string,
+    @requestBody({description: 'update user'}) user: User,
+  ): Promise<void> {
+    try {
+      return await this.userRepository.updateById(userId, user);
+    } catch (e) {
+      return e;
+    }
+  }
+
+  @del('/user/{userId}', {
+    responses: {
+      '200': {
+        description: 'Successfully deleted',
+        content: {
+          'application/json': {
+            schema: {
+              'type': 'boolean',
+            }
+          }
+        }
+      }
+    }
+  })
+  async delete(@param.path.string('userId') userId: string): Promise<void> {
+    return this.userRepository.deleteById(userId);
   }
 
   @get('/user/{userId}', {
@@ -57,5 +95,27 @@ export class UserController {
   })
   async findById(@param.path.string('userId') userId: string): Promise<User> {
     return this.userRepository.findById(userId);
+  }
+
+  @get('/user/search', {
+    responses: {
+      '200': {
+        description: 'Array of User',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(User, {includeRelations: true}),
+            }
+          },
+        },
+      },
+    },
+  })
+  async findByName(
+    @param.query.object('filter', getFilterSchemaFor(User))
+    filter?: Filter<User>,
+  ): Promise<User[]> {
+    return this.userRepository.find(filter);
   }
 }
