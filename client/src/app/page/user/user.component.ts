@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { User } from '../search/search.component';
+import { User } from 'src/app/openapi';
 
 @Component({
   selector: 'app-user',
@@ -22,7 +21,7 @@ export class UserComponent implements OnInit {
       this.user = {
         id: '007',
         role: 'student',
-        name: 'Justin',
+        firstName: 'Justin',
         grade: 11,
         email: 'justin@email.com'
       };
