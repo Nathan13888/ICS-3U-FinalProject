@@ -3,7 +3,6 @@ import { Filter, repository } from '@loopback/repository';
 import { post, requestBody, param, getModelSchemaRef, get, getFilterSchemaFor, put, del } from '@loopback/rest';
 import { User } from '../models';
 import { UserRepository } from '../repositories';
-import { validateEmail } from '../services/validator';
 
 export class UserController {
   constructor(
@@ -112,7 +111,7 @@ export class UserController {
       },
     },
   })
-  async findByName(
+  async search(
     @param.query.object('filter', getFilterSchemaFor(User))
     filter?: Filter<User>,
   ): Promise<User[]> {
