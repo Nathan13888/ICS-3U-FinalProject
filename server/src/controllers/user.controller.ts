@@ -49,7 +49,7 @@ export class UserController {
       },
     },
   })
-  async set(
+  async updateById(
     @param.path.string('userId') userId: string,
     @requestBody({description: 'update user'}) user: User,
   ): Promise<void> {
