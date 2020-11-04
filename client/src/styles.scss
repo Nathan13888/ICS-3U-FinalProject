@@ -82,6 +82,9 @@ $navbar-item-color: $primary;
 /* Bulma Imports */
 @import "./bulma.scss";
 
+/* Font Awesome Imports */
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+
 /* Custom Scrollbar */
 $scrollbar-width: 10px;
 ::-webkit-scrollbar {

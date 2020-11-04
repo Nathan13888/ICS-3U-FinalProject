@@ -1,1 +1,8 @@
-<p>user works!</p>
+<div class="container" *ngIf="user; else noUserMsg">
+  <p>{{ user!.id }}</p>
+  <p>{{ user!.role }}</p>
+  <p>{{ user!.name }}</p>
+  <p>{{ user!.grade }}</p>
+  <p>{{ user!.email }}</p>
+</div>
+<ng-template #noUserMsg><p>No user was found!</p></ng-template>
