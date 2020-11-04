@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'src/app/openapi';
+import { of } from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import { User, UserControllerService } from 'src/app/openapi';
 
 @Component({
   selector: 'app-user',
@@ -13,20 +15,21 @@ export class UserComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
-    public router: Router) {    }
+    public router: Router,
+    public userControllerService: UserControllerService) {    }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id === '007') {
-      this.user = {
-        id: '007',
-        role: 'student',
-        firstName: 'Justin',
-        grade: 11,
-        email: 'justin@email.com'
-      };
+    if (id) {
+      this.userControllerService.userControllerFindById(id)
+      .subscribe(user => {
+        this.user = user as User;
+      }, err => {
+        console.error(err);
+      });
+    } else {
+      this.router.navigate(['/']);
     }
-    else { this.user = undefined; }
   }
 
 }
