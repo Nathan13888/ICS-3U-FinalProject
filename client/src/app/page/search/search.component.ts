@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User, UserControllerService } from 'src/app/openapi';
 
 @Component({
   selector: 'app-search',
@@ -9,47 +10,57 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
 
-  searchQuery = new FormControl('');
+  searchForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl('', [Validators.email]),
+    role: new FormControl(''),
+    grade: new FormControl(''),
+  });
 
   queries: Array<User>;
 
   constructor(
     public route: ActivatedRoute,
-    public router: Router) {
+    public router: Router,
+    public userControllerService: UserControllerService) {
       this.queries = [];
     }
 
   ngOnInit(): void {
-    // this.queries = [];
+    console.log(this.queries);
     this.route.queryParams.subscribe(params => {
-      const searchText = params.search;
-      console.log(searchText);
-      if (!searchText) { this.queries = []; }
-      else {
-        this.searchQuery.setValue(searchText);
-        this.queries = [
-          {
-            id: '007',
-            role: 'student',
-            name: 'Justin',
-            grade: 11,
-            email: 'justin@email.com'
-          }
-        ];
-      }
+      this.queries = [];
+      if (params.firstName) { this.searchForm.controls.firstName.setValue(params.firstName); }
+      if (params.lastName) { this.searchForm.controls.lastName.setValue(params.lastName); }
+      if (params.email) { this.searchForm.controls.email.setValue(params.email); }
+      if (params.role) { this.searchForm.controls.role.setValue(params.role); }
+      if (params.grade) { this.searchForm.controls.grade.setValue(params.grade); }
+
+      console.log(params);
+      console.log('params');
+      this.userControllerService.userControllerSearch({
+        where: {}
+      }).subscribe(queries => {
+        this.queries = queries;
+        console.log(queries);
+        console.log('queries');
+      });
     });
   }
 
   search(): void {
-    this.router.navigate(['/'], {queryParams: {search: this.searchQuery.value}});
+    console.log(this.searchForm.value);
+    console.log('search');
+    this.router.navigate(['/'], {
+      queryParams: {
+        firstName: this.searchForm.controls.firstName.value,
+        lastName: this.searchForm.controls.lastName.value,
+        email: this.searchForm.controls.email.value,
+        role: this.searchForm.controls.role.value,
+        grade: this.searchForm.controls.grade.value,
+      }
+    });
   }
 
-}
-
-export interface User {
-  id: string;
-  role: 'student'|'mentor'|'teacher';
-  name: string;
-  grade: 1|2|3|4|5|6|7|8|9|10|11|12;
-  email: string;
 }
