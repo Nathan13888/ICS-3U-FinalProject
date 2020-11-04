@@ -107,13 +107,13 @@
       </div>
     </form>
   </div>
-  <div class="" *ngIf="queries; else noQueriesMessage">
-    <a class="box" *ngFor="let qry of queries" routerLink="/user/{{ qry.id }}">
-      <p>{{ qry.firstName }} {{ qry.lastName }}</p>
-      <div>
-        <span class="tag is-warning">{{ qry.role[0].toUpperCase()+qry.role.substr(1).toLowerCase() }}</span>
-        <span class="tag is-primary">Grade {{ qry.grade }}</span>
-      </div>
+  <div *ngIf="queries; else noQueriesMessage">
+    <a
+      class="box"
+      *ngFor="let query of queries"
+      routerLink="user/{{ query.id }}"
+    >
+      <p>{{ query.firstName }} {{ query.lastName }}</p>
     </a>
   </div>
   <ng-template #noQueriesMessage>
