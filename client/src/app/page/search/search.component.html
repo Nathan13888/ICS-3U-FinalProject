@@ -92,7 +92,7 @@
     <a class="box" *ngFor="let qry of queries" routerLink="user/{{ qry.id }}">
       <p class="has-text-weight-semibold">{{ qry.firstName }} {{ qry.lastName }}</p>
       <div>
-        <span class="tag is-warning">{{qry.role[0].toUpperCase() + qry.role.substr(1).toLowerCase()}}</span>
+        <span class="tag is-warning is-capitalized">{{qry.role}}</span>
         <span class="tag is-info" *ngIf="qry.grade">Grade {{qry.grade}}</span>
       </div>
     </a>
