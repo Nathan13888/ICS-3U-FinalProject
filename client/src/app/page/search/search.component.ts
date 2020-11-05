@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { User, UserControllerService } from 'src/app/openapi';
 
 @Component({
@@ -29,7 +30,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.queries);
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(first()).subscribe(params => {
       this.queries = [];
       if (params.firstName) { this.searchForm.controls.firstName.setValue(params.firstName); }
       if (params.lastName) { this.searchForm.controls.lastName.setValue(params.lastName); }
@@ -41,7 +42,7 @@ export class SearchComponent implements OnInit {
       console.log('params');
       this.userControllerService.userControllerSearch({
         where: {}
-      }).subscribe(queries => {
+      }).pipe(first()).subscribe(queries => {
         this.queries = queries;
         console.log(queries);
         console.log('queries');
