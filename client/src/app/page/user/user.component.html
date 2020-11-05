@@ -1,9 +1,144 @@
-<div class="container" *ngIf="user; else noUserMsg">
-  <p>{{ user!.id }}</p>
-  <p>{{ user!.role }}</p>
-  <p>{{ user!.firstName }}</p>
-  <p>{{ user!.lastName }}</p>
-  <p>{{ user!.grade }}</p>
-  <p>{{ user!.email }}</p>
+<div class="container">
+  <div *ngIf="user; else noUser">
+    <div
+      class="box"
+      [ngClass]="{
+        'has-background-warning': user.role === 'student',
+        'has-background-info': user.role === 'mentor',
+        'has-background-success': user.role === 'teacher'
+      }"
+    >
+      <section class="hero">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">{{ user.role | titlecase }} Profile</h1>
+            <h2 class="subtitle">{{ user.firstName }} {{ user.lastName }}</h2>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="box">
+      <form
+        [formGroup]="userForm"
+        (ngSubmit)="updateUser()"
+        class="has-text-centered"
+      >
+        <div class="field">
+          <fieldset [disabled]="!editMode">
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Full Name</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="First Name"
+                      formControlName="firstName"
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="control is-expanded">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Last Name"
+                      formControlName="lastName"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Email</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-expanded">
+                  <div class="control has-icons-left has-icons-right">
+                    <!-- class="input is-success" -->
+                    <!-- class="input is-danger" -->
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      class="input"
+                      formControlName="email"
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="icon is-small is-right">
+                      <!-- <i class="fas fa-check"></i> -->
+                      <i class="fas fa-exclamation-triangle"></i>
+                    </span>
+                  </div>
+                  <!-- <p class="help is-success">This email is available</p> -->
+                  <!-- <p class="help is-danger">This email is invalid</p> -->
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Role</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select">
+                      <select formControlName="role">
+                        <option value="">All roles</option>
+                        <option value="student">Student</option>
+                        <option value="mentor">Mentor</option>
+                        <option value="teacher">Teacher</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Grade</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="number"
+                      min="1"
+                      max="12"
+                      formControlName="grade"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control" *ngIf="editMode">
+            <button type="submit" class="button is-link is-light">Save</button>
+          </div>
+          <div class="control">
+            <button type="button" class="button is-link" (click)="toggleEdit()">
+              {{ editMode ? "Cancel" : "Edit" }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-template #noUser>
+    <p class="title">User data is not found.</p>
+  </ng-template>
 </div>
-<ng-template #noUserMsg><p>No user was found!</p></ng-template>
