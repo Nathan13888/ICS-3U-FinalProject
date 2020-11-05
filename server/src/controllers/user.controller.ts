@@ -35,7 +35,7 @@ export class UserController {
     return this.userRepository.createUser(user);
   }
 
-  @put('/users/{userId}', {
+  @put('/user/{userId}', {
     responses: {
       '200': {
         description: 'User',
