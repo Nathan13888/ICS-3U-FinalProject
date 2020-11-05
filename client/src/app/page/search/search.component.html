@@ -90,10 +90,22 @@
   </div>
   <div *ngIf="queries; else noQueriesMessage">
     <a class="box" *ngFor="let qry of queries" routerLink="user/{{ qry.id }}">
-      <p class="has-text-weight-semibold">{{ qry.firstName }} {{ qry.lastName }}</p>
-      <div>
-        <span class="tag is-warning is-capitalized">{{qry.role}}</span>
-        <span class="tag is-info" *ngIf="qry.grade">Grade {{qry.grade}}</span>
+      <div class="level">
+        <div class="level-left">
+          <div class="content">
+            <p class="has-text-weight-semibold">{{ qry.firstName }} {{ qry.lastName }}</p>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="content field is-grouped is-grouped-multiline is-align-content-end">
+            <div class="control">
+              <span class="tag pl-2 is-warning is-capitalized">{{qry.role}}</span>
+            </div>
+            <div class="control">
+              <span class="tag pl-2 is-info" *ngIf="qry.grade">Grade {{qry.grade}}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </a>
   </div>
