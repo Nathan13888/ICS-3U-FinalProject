@@ -1,18 +1,32 @@
 <div class="container">
   <div class="box">
     <p class="title">Search</p>
-    <form [formGroup]="searchForm" (ngSubmit)="search()" class="has-text-centered">
+    <form
+      [formGroup]="searchForm"
+      (ngSubmit)="search()"
+      class="has-text-centered"
+    >
       <div class="field">
         <label class="label">First Name</label>
         <div class="control">
-          <input class="input" type="text" placeholder="First Name" formControlName="firstName" />
+          <input
+            class="input"
+            type="text"
+            placeholder="First Name"
+            formControlName="firstName"
+          />
         </div>
       </div>
 
       <div class="field">
         <label class="label">Last Name</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Last Name" formControlName="lastName" />
+          <input
+            class="input"
+            type="text"
+            placeholder="Last Name"
+            formControlName="lastName"
+          />
         </div>
       </div>
 
@@ -21,7 +35,12 @@
         <div class="control has-icons-left has-icons-right">
           <!-- class="input is-success" -->
           <!-- class="input is-danger" -->
-          <input type="email" placeholder="Email" class="input" formControlName="email" />
+          <input
+            type="email"
+            placeholder="Email"
+            class="input"
+            formControlName="email"
+          />
           <span class="icon is-small is-left">
             <i class="fas fa-envelope"></i>
           </span>
@@ -93,16 +112,32 @@
       <div class="level">
         <div class="level-left">
           <div class="content">
-            <p class="has-text-weight-semibold">{{ qry.firstName }} {{ qry.lastName }}</p>
+            <p
+              class="has-text-weight-semibold"
+              *ngIf="qry.firstName || qry.lastName; else emailText"
+            >
+              {{ qry.firstName }} {{ qry.lastName }}
+            </p>
+            <ng-template #emailText
+              ><p class="has-text-weight-semibold">
+                {{ qry.email }}
+              </p></ng-template
+            >
           </div>
         </div>
         <div class="level-right">
-          <div class="content field is-grouped is-grouped-multiline is-align-content-end">
+          <div
+            class="content field is-grouped is-grouped-multiline is-align-content-end"
+          >
             <div class="control">
-              <span class="tag pl-2 is-warning is-capitalized">{{qry.role}}</span>
+              <span class="tag pl-2 is-warning is-capitalized">{{
+                qry.role
+              }}</span>
             </div>
             <div class="control">
-              <span class="tag pl-2 is-info" *ngIf="qry.grade">Grade {{qry.grade}}</span>
+              <span class="tag pl-2 is-info" *ngIf="qry.grade"
+                >Grade {{ qry.grade }}</span
+              >
             </div>
           </div>
         </div>
