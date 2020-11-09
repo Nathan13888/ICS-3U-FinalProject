@@ -38,6 +38,15 @@
         >
           Search
         </a>
+        <a
+          routerLink="/user/new"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="navbar-item"
+          (click)="navItemSelected($event)"
+        >
+          Create User
+        </a>
       </div>
     </div>
   </div>

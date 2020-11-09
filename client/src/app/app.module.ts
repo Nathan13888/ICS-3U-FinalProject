@@ -8,13 +8,15 @@ import { SearchComponent } from './page/search/search.component';
 import { NavComponent } from './nav/nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NewUserComponent } from './page/user/new-user/new-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
     SearchComponent,
-    NavComponent
+    NavComponent,
+    NewUserComponent
   ],
   imports: [
     BrowserModule,
