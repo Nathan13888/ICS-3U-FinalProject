@@ -35,6 +35,7 @@ export class NewUserComponent implements OnInit {
   ngOnInit(): void {}
 
   createUser(): void {
+    this.notificationService.clear();
     console.log(this.userForm.value);
     this.user = {
       firstName: this.userForm.controls.firstName.value,
