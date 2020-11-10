@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
-import {catchError, first} from 'rxjs/operators';
+import { first} from 'rxjs/operators';
+import { NotificationService } from 'src/app/notification.service';
+import { NotificationType } from 'src/app/notification/notification.component';
 import { User, UserControllerService } from 'src/app/openapi';
 
 @Component({
@@ -28,7 +30,8 @@ export class UserComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public userControllerService: UserControllerService) {    }
+    public notificationService: NotificationService,
+    public userControllerService: UserControllerService) {}
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('id');
@@ -42,8 +45,9 @@ export class UserComponent implements OnInit {
         if (this.user.email) { this.userForm.controls.email.setValue(this.user.email); }
         if (this.user.role) { this.userForm.controls.role.setValue(this.user.role); }
         if (this.user.grade) { this.userForm.controls.grade.setValue(this.user.grade); }
-      }, err => {
+      }, (err: HttpErrorResponse) => {
         console.error(err);
+        this.notificationService.push(NotificationType.ERROR, err.message);
         this.router.navigate(['/']);
       });
     } else {
@@ -56,6 +60,7 @@ export class UserComponent implements OnInit {
   }
 
   updateUser(): void {
+    this.notificationService.clear();
     console.log(this.id);
     console.log(this.userForm.value);
     this.userControllerService.userControllerUpdateById(
@@ -70,12 +75,14 @@ export class UserComponent implements OnInit {
           if (this.user.email) { this.userForm.controls.email.setValue(this.user.email); }
           if (this.user.role) { this.userForm.controls.role.setValue(this.user.role); }
           if (this.user.grade) { this.userForm.controls.grade.setValue(this.user.grade); }
-        }, err => {
+        }, (err: HttpErrorResponse) => {
           console.error(err);
+          this.notificationService.push(NotificationType.ERROR, err.message);
           this.router.navigate(['/']);
         });
-    }, err => {
+    }, (err: HttpErrorResponse) => {
       console.error(err);
+      this.notificationService.push(NotificationType.ERROR, err.message);
     });
   }
 
