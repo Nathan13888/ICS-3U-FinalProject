@@ -9,6 +9,7 @@ import { NavComponent } from './nav/nav.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NewUserComponent } from './page/user/new-user/new-user.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NewUserComponent } from './page/user/new-user/new-user.component';
     UserComponent,
     SearchComponent,
     NavComponent,
-    NewUserComponent
+    NewUserComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

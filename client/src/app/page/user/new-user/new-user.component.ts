@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { NotificationService } from 'src/app/notification.service';
+import { NotificationType } from 'src/app/notification/notification.component';
 import { User, UserControllerService } from 'src/app/openapi';
 
 @Component({
@@ -26,11 +29,13 @@ export class NewUserComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
+    public notificationService: NotificationService,
     public userControllerService: UserControllerService) {    }
 
   ngOnInit(): void {}
 
   createUser(): void {
+    this.notificationService.clear();
     console.log(this.userForm.value);
     this.user = {
       firstName: this.userForm.controls.firstName.value,
@@ -44,10 +49,12 @@ export class NewUserComponent implements OnInit {
       if (user.id) {
         this.router.navigate([`/user/${user.id}`]);
       } else {
-        console.error('Server gave no user id!');
+        console.error();
+        this.notificationService.push(NotificationType.ERROR, 'Server gave no user id!');
       }
-    }, err => {
+    }, (err: HttpErrorResponse) => {
       console.error(err);
+      this.notificationService.push(NotificationType.ERROR, err.message);
     });
   }
 

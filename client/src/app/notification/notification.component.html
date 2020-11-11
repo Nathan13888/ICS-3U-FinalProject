@@ -1,0 +1,12 @@
+<div
+  class="notification"
+  [ngClass]="{
+    'has-background-success': notificationType === 'success',
+    'has-background-danger': notificationType === 'error',
+    'has-background-warning': notificationType === 'warning',
+    'has-background-info': notificationType === 'info'
+  }"
+>
+  <button class="delete" (click)="delete.emit()"></button>
+  <ng-content></ng-content>
+</div>
