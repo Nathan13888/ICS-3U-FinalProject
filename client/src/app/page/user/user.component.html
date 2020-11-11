@@ -11,20 +11,24 @@
       <section class="hero">
         <div class="hero-body">
           <div class="container">
-            <h1 class="title">{{ user.role | titlecase }} Profile</h1>
-            <h2 class="subtitle">{{ user.firstName }} {{ user.lastName }}</h2>
+            <p class="title is-2">{{ user.role | titlecase }} Profile</p>
+            <p class="subtitle is-4">
+              {{ user.firstName }} {{ user.lastName }}
+            </p>
           </div>
         </div>
       </section>
     </div>
 
-    <div *ngFor="let notification of notificationService.notifications">
-      <app-notification
-        [notificationType]="notification[0]"
-        (delete)="this.notificationService.delete(notification[1])"
-      >
-        <p>{{ notification[1] }}</p></app-notification
-      >
+    <div class="py-3" *ngIf="notificationService.notifications">
+      <div *ngFor="let notification of notificationService.notifications">
+        <app-notification
+          [notificationType]="notification[0]"
+          (delete)="notificationService.delete(notification[1])"
+        >
+          <p>{{ notification[1] }}</p></app-notification
+        >
+      </div>
     </div>
 
     <div class="box">
@@ -134,17 +138,37 @@
           </fieldset>
         </div>
 
-        <div class="field is-grouped">
-          <div class="control" *ngIf="editMode">
+        <div class="field is-grouped" *ngIf="editMode">
+          <div class="control">
             <button type="submit" class="button is-link is-light">Save</button>
           </div>
           <div class="control">
-            <button type="button" class="button is-link" (click)="toggleEdit()">
-              {{ editMode ? "Cancel" : "Edit" }}
+            <button
+              type="button"
+              class="button is-link"
+              (click)="resetUserFormValues(); toggleEdit()"
+            >
+              Cancel
             </button>
           </div>
         </div>
       </form>
+    </div>
+
+    <div class="box">
+      <p class="title is-3">Account Management</p>
+      <div class="field is-grouped">
+        <div class="control">
+          <button type="button" class="button is-link" (click)="toggleEdit()">
+            Edit
+          </button>
+        </div>
+        <div class="control">
+          <button type="submit" class="button is-danger" (click)="deleteUser()">
+            Delete User
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <ng-template #noUser>

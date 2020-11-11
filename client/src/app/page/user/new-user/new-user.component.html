@@ -3,19 +3,21 @@
     <section class="hero">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title has-text-white">New Profile</h1>
+          <p class="title is-2 has-text-white">New Profile</p>
         </div>
       </div>
     </section>
   </div>
 
-  <div *ngFor="let notification of notificationService.notifications">
-    <app-notification
-      [notificationType]="notification[0]"
-      (delete)="this.notificationService.delete(notification[1])"
-    >
-      <p>{{ notification[1] }}</p></app-notification
-    >
+  <div class="py-3" *ngIf="notificationService.notifications">
+    <div *ngFor="let notification of notificationService.notifications">
+      <app-notification
+        [notificationType]="notification[0]"
+        (delete)="notificationService.delete(notification[1])"
+      >
+        <p>{{ notification[1] }}</p></app-notification
+      >
+    </div>
   </div>
 
   <div class="box">

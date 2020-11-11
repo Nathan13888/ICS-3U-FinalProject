@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,8 @@ import { User, UserControllerService } from 'src/app/openapi';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
+  providers: [NotificationService]
 })
 export class UserComponent implements OnInit {
 
@@ -61,8 +62,6 @@ export class UserComponent implements OnInit {
 
   saveUser(): void {
     this.notificationService.clear();
-    console.log(this.id);
-    console.log(this.userForm.value);
     this.userControllerService.userControllerUpdateById(
       this.id,
       this.userForm.value,
@@ -70,11 +69,9 @@ export class UserComponent implements OnInit {
         this.userControllerService.userControllerFindById(this.id).pipe(first())
         .subscribe(user => {
           this.user = user as User;
-          if (this.user.firstName) { this.userForm.controls.firstName.setValue(this.user.firstName); }
-          if (this.user.lastName) { this.userForm.controls.lastName.setValue(this.user.lastName); }
-          if (this.user.email) { this.userForm.controls.email.setValue(this.user.email); }
-          if (this.user.role) { this.userForm.controls.role.setValue(this.user.role); }
-          if (this.user.grade) { this.userForm.controls.grade.setValue(this.user.grade); }
+          this.resetUserFormValues();
+
+          this.notificationService.push(NotificationType.SUCCESS, 'Successfully updated user.');
         }, (err: HttpErrorResponse) => {
           console.error(err);
           this.notificationService.push(NotificationType.ERROR, err.message);
@@ -84,6 +81,28 @@ export class UserComponent implements OnInit {
       console.error(err);
       this.notificationService.push(NotificationType.ERROR, err.message);
     });
+  }
+
+  deleteUser(): void {
+    this.notificationService.clear();
+    this.userControllerService.userControllerDelete(
+      this.id,
+      ).pipe(first()).subscribe(res => {
+        console.log('Account has been successfully deleted.');
+        this.notificationService.push(NotificationType.SUCCESS, 'Account has been successfully deleted.');
+        this.router.navigate(['/']);
+    }, (err: HttpErrorResponse) => {
+      console.error(err);
+      this.notificationService.push(NotificationType.ERROR, err.message);
+    });
+  }
+
+  resetUserFormValues(): void {
+    if (this.user.firstName) { this.userForm.controls.firstName.setValue(this.user.firstName); }
+    if (this.user.lastName) { this.userForm.controls.lastName.setValue(this.user.lastName); }
+    if (this.user.email) { this.userForm.controls.email.setValue(this.user.email); }
+    if (this.user.role) { this.userForm.controls.role.setValue(this.user.role); }
+    if (this.user.grade) { this.userForm.controls.grade.setValue(this.user.grade); }
   }
 
 }

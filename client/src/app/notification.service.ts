@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NotificationType } from './notification/notification.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NotificationService {
 
-  notifications: Array<[NotificationType, string]>;
+  notifications: Array<[NotificationType, string]> = [];
 
-  constructor() {
-    this.notifications = [];
-  }
+  constructor() {}
 
   push(notificationType: NotificationType, message: string): void {
     this.notifications.push([notificationType, message]);
@@ -20,10 +16,7 @@ export class NotificationService {
     if (notificationType) {
       this.notifications = this.notifications.filter(obj => obj !== [notificationType, message]);
     } else {
-      this.notifications = this.notifications.filter(obj => {
-        console.log(obj[1] !== message);
-        return obj[1] !== message;
-      });
+      this.notifications = this.notifications.filter(obj => obj[1] !== message);
     }
 
   }

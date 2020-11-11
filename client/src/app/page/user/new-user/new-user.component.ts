@@ -10,7 +10,8 @@ import { User, UserControllerService } from 'src/app/openapi';
 @Component({
   selector: 'app-new-user',
   templateUrl: './new-user.component.html',
-  styleUrls: ['./new-user.component.scss']
+  styleUrls: ['./new-user.component.scss'],
+  providers: [NotificationService]
 })
 export class NewUserComponent implements OnInit {
 
@@ -36,7 +37,6 @@ export class NewUserComponent implements OnInit {
 
   createUser(): void {
     this.notificationService.clear();
-    console.log(this.userForm.value);
     this.user = {
       firstName: this.userForm.controls.firstName.value,
       lastName: this.userForm.controls.lastName.value,
