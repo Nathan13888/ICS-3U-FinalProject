@@ -75,6 +75,7 @@ export class UserComponent implements OnInit {
           if (this.user.email) { this.userForm.controls.email.setValue(this.user.email); }
           if (this.user.role) { this.userForm.controls.role.setValue(this.user.role); }
           if (this.user.grade) { this.userForm.controls.grade.setValue(this.user.grade); }
+          this.editMode = false;
         }, (err: HttpErrorResponse) => {
           console.error(err);
           this.notificationService.push(NotificationType.ERROR, err.message);
