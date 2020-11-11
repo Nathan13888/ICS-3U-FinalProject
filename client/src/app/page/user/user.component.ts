@@ -72,6 +72,7 @@ export class UserComponent implements OnInit {
           this.resetUserFormValues();
 
           this.notificationService.push(NotificationType.SUCCESS, 'Successfully updated user.');
+          this.editMode = false;
         }, (err: HttpErrorResponse) => {
           console.error(err);
           this.notificationService.push(NotificationType.ERROR, err.message);
