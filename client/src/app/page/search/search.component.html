@@ -78,13 +78,29 @@
         </div>
       </div> -->
 
-      <div class="field is-grouped">
-        <div class="control">
-          <button type="submit" class="button is-link">Search</button>
+      <div class="level">
+        <div class="level-left">
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="submit" class="button is-link">Search</button>
+            </div>
+            <!-- <div class="control">
+              <button class="button is-link is-light">Cancel</button>
+            </div> -->
+          </div>
         </div>
-        <!-- <div class="control">
-          <button class="button is-link is-light">Cancel</button>
-        </div> -->
+        <div class="level-right">
+          <div class="field">
+            <div class="control">
+              <input class="switch is-rtl is-rounded is-info" id="showAll"
+                type="checkbox"
+                formControlName="showAll"
+                (click)="toggleShowAll()"
+              >
+              <label for="showAll">Show All</label>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>

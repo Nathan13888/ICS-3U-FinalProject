@@ -20,6 +20,7 @@ export class SearchComponent implements OnInit {
   });
 
   queries: Array<User> | undefined;
+  showAll = false;
 
   constructor(
     public route: ActivatedRoute,
@@ -28,9 +29,12 @@ export class SearchComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    // console.log(this.queries);
-
+    // this.searchForm.controls.showAll.setValue(0);
     // TODO: update search fields when loading page
+    this.updateSearch();
+  }
+
+  updateSearch(): void {
     this.route.queryParams.pipe(first()).subscribe(params => {
       if (params.firstName) {
         this.searchForm.controls.firstName.setValue(params.firstName);
@@ -52,6 +56,11 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  toggleShowAll(): void {
+    this.showAll = !this.showAll;
+    this.updateQueries();
+  }
+
   updateQueries(): void {
     // TODO: all params force string
     // TODO: filter input
@@ -67,13 +76,13 @@ export class SearchComponent implements OnInit {
     // TODO: show everything toggle (set filter empty)
 
     const filter = {
-      where: {
+      where: (this.showAll?{}:{
         firstName: { regexp: `/${fn}/i`},
         lastName: { regexp: `/${ln}/i` },
         email: { regexp: `/${em}/i` },
         role: { regexp: ro },
         grade: (gr === '' ? { gt: 0 } : Number(gr))
-      },
+      }),
     };
     console.log(filter);
     console.log('filter');
