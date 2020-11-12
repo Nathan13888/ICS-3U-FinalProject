@@ -89,7 +89,6 @@ export class UserComponent implements OnInit {
     this.userControllerService.userControllerDelete(
       this.id,
       ).pipe(first()).subscribe(res => {
-        console.log('Account has been successfully deleted.');
         this.notificationService.push(NotificationType.SUCCESS, 'Account has been successfully deleted.');
         this.router.navigate(['/']);
     }, (err: HttpErrorResponse) => {

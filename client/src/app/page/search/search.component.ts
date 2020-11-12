@@ -92,21 +92,15 @@ export class SearchComponent implements OnInit {
         grade: (gr === '' ? { gt: 0 } : Number(gr))
       }),
     };
-    console.log(filter);
-    console.log('filter');
 
     this.userControllerService.userControllerSearch(
       JSON.stringify(filter) as UserFilter
     ).pipe(first()).subscribe(queries => {
       this.queries = queries;
-      console.log(queries);
-      console.log('queries');
     });
   }
 
   search(): void {
-    console.log(this.searchForm.value);
-    console.log('search');
     // TODO: only search when there is text in search box
     this.router.navigate(['/'], {
       queryParams: {

@@ -85,7 +85,7 @@ export class UserController {
         content: {
           'application/json': {
             schema: {
-              'type': 'boolean',
+              'x-ts-type': User,
             }
           },
         },
