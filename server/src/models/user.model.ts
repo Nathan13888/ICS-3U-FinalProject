@@ -58,6 +58,7 @@ export class User extends Entity {
   @property({
     type: 'number',
     jsonSchema: {
+      type: "integer",
       minimum: 1,
       maximum: 12,
     }
