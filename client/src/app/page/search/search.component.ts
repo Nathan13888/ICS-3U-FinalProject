@@ -56,6 +56,14 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  clear(): void {
+    this.searchForm.controls.firstName.setValue('');
+    this.searchForm.controls.lastName.setValue('');
+    this.searchForm.controls.email.setValue('');
+    this.searchForm.controls.role.setValue('');
+    this.searchForm.controls.grade.setValue('');
+  }
+
   toggleShowAll(): void {
     this.showAll = !this.showAll;
     this.updateQueries();
