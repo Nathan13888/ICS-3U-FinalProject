@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
       if (params.firstName) {
         this.searchForm.controls.firstName.setValue(params.firstName);
       }
-      if (params.lastNam) {
+      if (params.lastName) {
         this.searchForm.controls.lastName.setValue(params.lastName);
       }
       if (params.email) {
@@ -76,7 +76,7 @@ export class SearchComponent implements OnInit {
     // TODO: show everything toggle (set filter empty)
 
     const filter = {
-      where: (this.showAll?{}:{
+      where: (this.showAll ? {} : {
         firstName: { regexp: `/${fn}/i`},
         lastName: { regexp: `/${ln}/i` },
         email: { regexp: `/${em}/i` },
