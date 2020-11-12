@@ -49,7 +49,7 @@ export class NewUserComponent implements OnInit {
       if (user.id) {
         this.router.navigate([`/user/${user.id}`]);
       } else {
-        console.error();
+        console.error('Server gave no user id!');
         this.notificationService.push(NotificationType.ERROR, 'Server gave no user id!');
       }
     }, (err: HttpErrorResponse) => {
