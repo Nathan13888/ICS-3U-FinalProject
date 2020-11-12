@@ -30,27 +30,16 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.queries);
 
-    this.updateQueries();
-  }
-
-  updateQueries(): void {
-    // TODO: all params force string
+    // TODO: update search fields when loading page
     this.route.queryParams.pipe(first()).subscribe(params => {
-      let fn;
-      let ln;
-      let em;
-
-      if (params.firstName.length > 0) {
+      if (params.firstName) {
         this.searchForm.controls.firstName.setValue(params.firstName);
-        fn = params.firstName;
       }
-      if (params.lastName.length > 0) {
+      if (params.lastNam) {
         this.searchForm.controls.lastName.setValue(params.lastName);
-        ln = params.lastName;
       }
-      if (params.email.length > 0) {
+      if (params.email) {
         this.searchForm.controls.email.setValue(params.email);
-        em = params.email;
       }
       if (params.role) {
         this.searchForm.controls.role.setValue(params.role);
@@ -59,21 +48,42 @@ export class SearchComponent implements OnInit {
         this.searchForm.controls.grade.setValue(params.grade);
       }
 
-      const filter = {
-        where: {
-          firstName: fn,
-          lastName: ln,
-          email: em,
-        },
-      };
+      this.updateQueries();
+    });
+  }
 
-      this.userControllerService.userControllerSearch(
-        JSON.stringify(filter) as UserFilter
-      ).pipe(first()).subscribe(queries => {
-        this.queries = queries;
-        console.log(queries);
-        console.log('queries');
-      });
+  updateQueries(): void {
+    // TODO: all params force string
+    // TODO: filter input
+
+    const control = this.searchForm.controls;
+
+    const fn = control.firstName.value;
+    const ln = control.lastName.value;
+    const em = control.email.value;
+    const ro = control.role.value;
+    const gr = control.grade.value;
+
+    // TODO: show everything toggle (set filter empty)
+
+    const filter = {
+      where: {
+        firstName: { regexp: fn },
+        lastName: { regexp: ln },
+        email: { regexp: em },
+        role: { regexp: ro },
+        grade: (gr === '' ? { gt: 0 } : Number(gr))
+      },
+    };
+    console.log(filter);
+    console.log('filter');
+
+    this.userControllerService.userControllerSearch(
+      JSON.stringify(filter) as UserFilter
+    ).pipe(first()).subscribe(queries => {
+      this.queries = queries;
+      console.log(queries);
+      console.log('queries');
     });
   }
 
