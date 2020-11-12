@@ -58,9 +58,9 @@ export class SearchComponent implements OnInit {
 
     const control = this.searchForm.controls;
 
-    const fn = control.firstName.value;
-    const ln = control.lastName.value;
-    const em = control.email.value;
+    const fn = control.firstName.value.trim();
+    const ln = control.lastName.value.trim();
+    const em = control.email.value.trim();
     const ro = control.role.value;
     const gr = control.grade.value;
 
