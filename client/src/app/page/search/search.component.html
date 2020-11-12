@@ -107,12 +107,14 @@
           <div class="level-right">
             <div class="content field is-grouped is-grouped-multiline is-align-content-end">
               <div class="control">
-                <span class="tag pl-2 is-warning is-capitalized">{{
-                qry.role
-              }}</span>
+                <span class="tag pl-2 is-capitalized" [ngClass]="{
+                    'is-warning': qry.role === 'student',
+                    'is-info': qry.role === 'mentor',
+                    'is-success': qry.role === 'teacher'
+                  }">{{ qry.role }}</span>
               </div>
               <div class="control">
-                <span class="tag pl-2 is-info" *ngIf="qry.grade">Grade {{ qry.grade }}</span>
+                <span class="tag pl-2 is-primary" *ngIf="qry.grade">Grade {{ qry.grade }}</span>
               </div>
             </div>
           </div>
