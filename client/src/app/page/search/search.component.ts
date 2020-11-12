@@ -68,9 +68,9 @@ export class SearchComponent implements OnInit {
 
     const filter = {
       where: {
-        firstName: { regexp: fn },
-        lastName: { regexp: ln },
-        email: { regexp: em },
+        firstName: { regexp: `/${fn}/i`},
+        lastName: { regexp: `/${ln}/i` },
+        email: { regexp: `/${em}/i` },
         role: { regexp: ro },
         grade: (gr === '' ? { gt: 0 } : Number(gr))
       },
